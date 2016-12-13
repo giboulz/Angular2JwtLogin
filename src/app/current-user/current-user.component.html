@@ -1,0 +1,19 @@
+<div class="col-md-6 col-md-offset-3">
+  <div class="lead">
+    <h1>Home</h1>
+    <p>You're logged in with JWT!!</p>
+  </div>
+  Users from secure api end point:
+  id : <p>{{user.id}}</p>
+  ldapid : <p>{{user.ldapId}}</p>
+  pass : <p>{{user.password}}</p>
+  mail : <p>{{user.mail}}</p>
+  team : <p>{{user.team}}</p>
+  firstname : <p>{{user.firstName}}</p>
+  lastname : <p>{{user.lastName}}</p>
+  active <p>{{user.active}}</p>
+
+</div>
+<div class="col-md-6 col-md-offset-3">
+  <p><a [routerLink]="['/login']">Logout</a></p>
+</div>
