@@ -12,6 +12,10 @@ import { CurrentUserComponent } from './current-user/current-user.component';
 import { AuthenticationService } from './authentication.service';
 import { AuthGuardService } from './auth-guard.service';
 import { CurrentUserService } from './current-user.service';
+import { Http, XHRBackend, RequestOptions } from '@angular/http';
+import { HttpInterceptor } from './login/HttpInterceptor.service';
+import { AppRequestOptions, WEBAPI_URL_TOKEN } from './login/app.request.options';
+import { TokenAuthService } from './token-auth.service'; 
 
 @NgModule({
   declarations: [
@@ -30,7 +34,16 @@ import { CurrentUserService } from './current-user.service';
   providers: [
     AuthenticationService,
     AuthGuardService,
-    CurrentUserService
+    CurrentUserService,
+    TokenAuthService,
+    {
+      provide: Http, useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, tokenAuthService: TokenAuthService) => {
+        return new HttpInterceptor(backend, defaultOptions, tokenAuthService);
+      },
+      deps: [XHRBackend, RequestOptions, TokenAuthService]
+    },
+    { provide: WEBAPI_URL_TOKEN, useValue: 'http://localhost:8080/' },
+    { provide: RequestOptions, useClass: AppRequestOptions }
   ],
   bootstrap: [AppComponent]
 })

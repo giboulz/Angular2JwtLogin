@@ -4,19 +4,22 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { AuthenticationService } from './authentication.service';
 import { User } from './current-user/user';
+import { TokenAuthService } from './token-auth.service';
 
 @Injectable()
 export class CurrentUserService {
 
   constructor(private http: Http,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService,
+    private tokenAuthService: TokenAuthService) { }
 
 
 
   getCurrentUser(): Observable<User> {
 
     let authHeader = new Headers();
-    authHeader.append('Authorization', this.authenticationService.token);
+    //authHeader.append('Authorization', this.authenticationService.token);
+    authHeader.append('Authorization', this.tokenAuthService.token);
 
 
     // get user from api
