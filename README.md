@@ -1,3 +1,13 @@
+# Angular2JwtLogin
+application generated with angular-cli.
+
+pour lancer : ng serve
+
+s'interface avec le projet spring boot
+https://github.com/giboulz/springBoot
+
+
+
 # LoginApplication
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.21.
