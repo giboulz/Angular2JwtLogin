@@ -9,13 +9,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app.routing';
 import { CurrentUserComponent } from './current-user/current-user.component';
-import { AuthenticationService } from './authentication.service';
-import { AuthGuardService } from './auth-guard.service';
-import { CurrentUserService } from './current-user.service';
+import { AuthenticationService } from './login/authentication.service';
+import { AuthGuardService } from './services/auth-guard.service';
+import { CurrentUserService } from './current-user/current-user.service';
 import { Http, XHRBackend, RequestOptions } from '@angular/http';
 import { HttpInterceptor } from './login/HttpInterceptor.service';
 import { AppRequestOptions, WEBAPI_URL_TOKEN } from './login/app.request.options';
-import { TokenAuthService } from './token-auth.service'; 
+import { TokenAuthService } from './login/token-auth.service'; 
 
 @NgModule({
   declarations: [

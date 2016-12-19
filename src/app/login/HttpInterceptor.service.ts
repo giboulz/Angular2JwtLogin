@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, ConnectionBackend, RequestOptions, Request, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../authentication.service';
-import { TokenAuthService } from '../token-auth.service'; 
+import { AuthenticationService } from '../login/authentication.service';
+import { TokenAuthService } from '../login/token-auth.service';
 
 @Injectable()
 export class HttpInterceptor extends Http {
@@ -12,50 +12,65 @@ export class HttpInterceptor extends Http {
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
 
+        if (this.tokenAuthService.token) {
+            /*if(!options){
+                options = ; 
+            }
+            let headers = options.headers ;
 
-        if(this.tokenAuthService.token){
-              /*if(!options){
-                  options = ; 
-              }
-              let headers = options.headers ;
-
-            options.headers.append('Authorization', this.tokenAuthService.token);
-        */
-            console.log("got a token ! "); 
+          options.headers.append('Authorization', this.tokenAuthService.token);
+          */
+            console.log("got a token ! ");
+            //console.log(options.headers); 
         }
         return this.intercept(super.request(url, options));
     }
 
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
         //console.log('Before the request....');
-        return this.intercept(super.get(url, options));
+        return this.intercept(super.get(url, this.setAuthorisation(options)));
     }
 
     post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
-        return this.intercept(super.post(url, body, this.getRequestOptionArgs(options)));
+        return this.intercept(super.post(url, body, this.setAuthorisation(options)));
     }
 
     put(url: string, options?: RequestOptionsArgs): Observable<Response> {
-        return this.intercept(super.put(url, options));
+        return this.intercept(super.put(url, this.setAuthorisation(options)));
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
-        return this.intercept(super.delete(url, options));
-
+        return this.intercept(super.delete(url, this.setAuthorisation(options)));
     }
 
-    getRequestOptionArgs(options?: RequestOptionsArgs): RequestOptionsArgs {
 
-        if (options != null && options.headers == null) {
-            options.headers.append('Content-Type', 'application/json');
+    setAuthorisation(options?: RequestOptionsArgs): RequestOptionsArgs {
+        if (this.tokenAuthService.token) {
+            options = this.InstanciateHeaderInOptionIfNeeded(options);
+
+            options.headers.append('Authorization', this.tokenAuthService.token);
         }
 
         return options;
     }
 
+    InstanciateHeaderInOptionIfNeeded(options?: RequestOptionsArgs): RequestOptionsArgs {
+        if (options === undefined) {
+            options = new RequestOptions();
+        }
+
+        if (options.headers === undefined || options.headers == null) {
+            options.headers = new Headers();
+        }
+        return options;
+    }
+
 
     intercept(observable: Observable<Response>): Observable<Response> {
+
         return observable.catch((err, source) => {
+            console.log("Intercept");
+            console.log(err.status)
             if (err.status == 401 || err.status == 403/*&& !_.endsWith(err.url, 'api/auth/login')*/) {
                 //this._router.navigate(['/login']);
                 console.log("Erreur Authentication");

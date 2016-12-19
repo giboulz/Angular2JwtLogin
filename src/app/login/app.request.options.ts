@@ -1,6 +1,6 @@
 import { Injectable, Inject, OpaqueToken } from '@angular/core';
 import { BaseRequestOptions, RequestOptions, RequestOptionsArgs } from '@angular/http';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../login/authentication.service';
 
 export const WEBAPI_URL_TOKEN = new OpaqueToken('webApiBaseUrl');
 
