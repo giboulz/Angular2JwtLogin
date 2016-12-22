@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { ButtonsModule } from 'ng2-bootstrap/ng2-bootstrap';
-
+import { Router } from '@angular/router'; 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app.routing';
@@ -16,6 +16,8 @@ import { Http, XHRBackend, RequestOptions } from '@angular/http';
 import { HttpInterceptor } from './login/HttpInterceptor.service';
 import { AppRequestOptions, WEBAPI_URL_TOKEN } from './login/app.request.options';
 import { TokenAuthService } from './login/token-auth.service'; 
+
+
 
 @NgModule({
   declarations: [
@@ -37,10 +39,10 @@ import { TokenAuthService } from './login/token-auth.service';
     CurrentUserService,
     TokenAuthService,
     {
-      provide: Http, useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, tokenAuthService: TokenAuthService) => {
-        return new HttpInterceptor(backend, defaultOptions, tokenAuthService);
+      provide: Http, useFactory: (backend: XHRBackend, defaultOptions: RequestOptions, tokenAuthService: TokenAuthService, router : Router) => {
+        return new HttpInterceptor(backend, defaultOptions, tokenAuthService, router);
       },
-      deps: [XHRBackend, RequestOptions, TokenAuthService]
+      deps: [XHRBackend, RequestOptions, TokenAuthService, Router]
     },
     { provide: WEBAPI_URL_TOKEN, useValue: 'http://localhost:8080/' },
     { provide: RequestOptions, useClass: AppRequestOptions }

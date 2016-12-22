@@ -1,28 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, ConnectionBackend, RequestOptions, Request, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../login/authentication.service';
 import { TokenAuthService } from '../login/token-auth.service';
 
 @Injectable()
 export class HttpInterceptor extends Http {
-    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private tokenAuthService: TokenAuthService) {
+
+    constructor(backend: ConnectionBackend, defaultOptions: RequestOptions, private tokenAuthService: TokenAuthService, private router: Router) {
         super(backend, defaultOptions);
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-
-        if (this.tokenAuthService.token) {
-            /*if(!options){
-                options = ; 
-            }
-            let headers = options.headers ;
-
-          options.headers.append('Authorization', this.tokenAuthService.token);
-          */
-            console.log("got a token ! ");
-            //console.log(options.headers); 
-        }
         return this.intercept(super.request(url, options));
     }
 
@@ -72,7 +62,7 @@ export class HttpInterceptor extends Http {
             console.log("Intercept");
             console.log(err.status)
             if (err.status == 401 || err.status == 403/*&& !_.endsWith(err.url, 'api/auth/login')*/) {
-                //this._router.navigate(['/login']);
+                this.router.navigate(['/login']);
                 console.log("Erreur Authentication");
                 return Observable.empty();
             } else {
