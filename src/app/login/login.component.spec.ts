@@ -26,12 +26,9 @@ describe('LoginComponent', () => {
       }
     };
     mockRouter = {
-      navigate(url: string): string { return url; }, 
+      navigate(url: string): string { return url; },
       navigateByUrl(url: string): string { return url; }
     };
-
-
-
 
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
@@ -51,7 +48,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create component', () => {
     expect(component).toBeTruthy();
   });
 
@@ -72,11 +69,31 @@ describe('LoginComponent', () => {
     //Assert
     // args passed to router.navigate()
     const navArgs = spy.calls.first().args[0];
-    console.log(navArgs);
 
     // expecting to navigate to /user
     expect(navArgs).toBe('/user',
       'should nav to /user');
   }));
+
+  it('should show an error message on an unsuccessfull attempt ', inject([Router, AuthenticationService], (router: Router, authService: AuthenticationService) => {
+    //arrange
+    const spy = spyOn(router, 'navigateByUrl');
+
+    //wrong login return false
+    authService.login = function (user: string, password: string): Observable<boolean> {
+      return Observable.of(false);
+    };
+
+    //Act
+    component.model.username = "toto";
+    component.model.password = "password";
+    fixture.detectChanges();
+    component.login();
+
+    //Assert
+    expect(component.error).toBe('Username or password is incorrect', 'error message should display');
+    expect(component.loading).toBe(false, 'loading should stop');
+  }));
+
 
 });

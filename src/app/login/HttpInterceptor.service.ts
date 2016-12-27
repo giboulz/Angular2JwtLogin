@@ -17,7 +17,7 @@ export class HttpInterceptor extends Http {
     }
 
     get(url: string, options?: RequestOptionsArgs): Observable<Response> {
-        //console.log('Before the request....');
+        // console.log('Before the request....');
         return this.intercept(super.get(url, this.setAuthorisation(options)));
     }
 
@@ -57,7 +57,6 @@ export class HttpInterceptor extends Http {
 
 
     intercept(observable: Observable<Response>): Observable<Response> {
-
         return observable.catch((err, source) => {
             console.log("Intercept");
             console.log(err.status)

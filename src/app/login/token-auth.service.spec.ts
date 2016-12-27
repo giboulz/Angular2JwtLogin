@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-/*
+
 import { TestBed, async, inject } from '@angular/core/testing';
 import { TokenAuthService } from './token-auth.service';
 
@@ -10,8 +10,13 @@ describe('TokenAuthService', () => {
     });
   });
 
-  it('should ...', inject([TokenAuthService], (service: TokenAuthService) => {
-    expect(service).toBeTruthy();
+  it('should containts a token', inject([TokenAuthService], (service: TokenAuthService) => {
+    //Arrange
+    service.token = 'toto'; 
+
+    //Act
+
+    //Assert
+    expect(service.token).toBe('toto');
   }));
 });
-*/

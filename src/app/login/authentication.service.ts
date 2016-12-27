@@ -36,6 +36,7 @@ export class AuthenticationService {
                     // return true to indicate successful login
                     return true;
                 } else {
+
                     // return false to indicate failed login
                     return false;
                 }
@@ -44,8 +45,6 @@ export class AuthenticationService {
     }
 
     logout(): void {
-        console.log("logout ! ");
-        //this.token = null;
         this.tokenAuthService.token = null; 
         localStorage.removeItem('currentUser');
     }
